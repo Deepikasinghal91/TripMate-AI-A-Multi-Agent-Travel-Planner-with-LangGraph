@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TripMate AI - Modern Travel Planner</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="layout">
+
+    <!-- Left: Control Panel -->
+    <aside class="side">
+        <div class="side-top">
+            <div class="brand">
+                <span class="brand-icon">✨</span> TripMate AI
+            </div>
+            <div class="status-pill">
+                <span class="status-dot"></span>
+                Online
+            </div>
+        </div>
+
+        <h1>Where to next?</h1>
+        <p class="intro">
+            Describe your trip in one sentence. AI agents search live flights & hotels to craft your custom itinerary.
+        </p>
+
+        <div class="input-area">
+            <textarea
+                id="userInput"
+                aria-label="Travel request"
+                placeholder="7 days in Japan from Delhi, flights and hotels included, under 2 lakhs..."
+            ></textarea>
+
+            <button id="sendBtn" onclick="sendMessage()">
+                <span id="btnText">Plan my trip ✨</span>
+                <span id="btnLoader" class="loader hidden"></span>
+            </button>
+        </div>
+
+        <section id="errorBox" class="error-box hidden" role="alert"></section>
+
+        <!-- Quick Idea Chips -->
+        <div class="ideas">
+            <h2>Start from an idea</h2>
+            <div class="quick-prompts">
+                <button onclick="setPrompt('Plan a complete 7 days Japan trip from Delhi including flights, hotels and sightseeing under 2 lakhs.')">
+                    🇯🇵 7 days in Japan
+                </button>
+                <button onclick="setPrompt('Plan a 5 days Dubai trip from Delhi with flights, hotels and sightseeing.')">
+                    🇦🇪 5 days in Dubai
+                </button>
+                <button onclick="setPrompt('Plan a 7 days Thailand trip from Delhi with budget hotels and sightseeing.')">
+                    🇹🇭 7 days in Thailand, budget stay
+                </button>
+                <button onclick="setPrompt('Give me all country flight info.')">
+                    ✈️ Flight info for all countries
+                </button>
+            </div>
+        </div>
+
+        <footer>
+            Built with FastAPI, LangGraph, Groq, PostgreSQL, Tavily and AviationStack
+        </li>
+        </footer>
+    </aside>
+
+    <!-- Right: Workspace / Stage -->
+    <main class="stage">
+
+        <!-- Live Agent Progress Tracker (Hidden by default) -->
+        <section id="progressSection" class="progress-section hidden">
+            <div class="agent-card">
+                <h3>🤖 AI Agents at Work...</h3>
+                <div class="step-list">
+                    <div id="step1" class="agent-step active">1. Querying AviationStack for live flight options...</div>
+                    <div id="step2" class="agent-step">2. Searching web via Tavily for top-rated hotels & spots...</div>
+                    <div id="step3" class="agent-step">3. Synthesizing day-by-day plan via Groq & LangGraph...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Result Section -->
+        <section id="resultSection" class="result-section hidden">
+            <div class="result-header">
+                <div>
+                    <h2>Your travel plan</h2>
+                    <p id="threadInfo">Thread ID: -</p>
+                </div>
+                <div class="result-actions">
+                    <button class="copy-btn" onclick="copyResult()">Copy Plan</button>
+                    <button class="download-btn" onclick="downloadPDF()">Download PDF</button>
+                </div>
+            </div>
+
+            <div id="pdfContent" class="pdf-content">
+                <h1 class="pdf-title">AI Travel Plan</h1>
+                <div id="resultBox" class="result-box"></div>
+            </div>
+        </section>
+
+        <!-- Modern Bento Empty State -->
+        <div class="empty-state" id="emptyState">
+            <div class="empty-hero">
+                <h2>Your journey starts here</h2>
+                <p>Select a quick idea on the left or type your custom prompt to generate an intelligent travel blueprint.</p>
+            </div>
+            
+            <div class="bento-grid">
+                <div class="bento-card" onclick="setPrompt('7 days luxury trip to Switzerland from Delhi')">
+                    <span class="bento-emoji">🏔️</span>
+                    <h4>Swiss Alps Escape</h4>
+                    <p>Scenic train routes & luxury alpine stays</p>
+                </div>
+                <div class="bento-card" onclick="setPrompt('5 days beach vacation in Phuket, Thailand under 80k')">
+                    <span class="bento-emoji">🏖️</span>
+                    <h4>Phuket Beach Retreat</h4>
+                    <p>Island hopping & vibrant nightlife</p>
+                </div>
+                <div class="bento-card" onclick="setPrompt('3 days cultural heritage tour in Kyoto, Japan')">
+                    <span class="bento-emoji">⛩️</span>
+                    <h4>Kyoto Temples & Tea</h4>
+                    <p>Historical shrines & authentic cuisine</p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="/static/script.js"></script>
+
+</body>
+</html>

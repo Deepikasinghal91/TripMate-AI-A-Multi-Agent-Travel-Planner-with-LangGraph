@@ -16,6 +16,7 @@ from psycopg.rows import dict_row
 
 from langgraph.graph import StateGraph, START, END
 from langgraph.checkpoint.postgres import PostgresSaver
+
 from langchain_core.messages import (
     AnyMessage,
     HumanMessage,
@@ -59,8 +60,12 @@ if not GROQ_API_KEY:
 # LLM
 # =========================
 
+# llama-3.3-70b-versatile was shut down by Groq on 16 Aug 2026.
+# Replacement recommended by Groq: openai/gpt-oss-120b (or qwen/qwen3.6-27b).
+GROQ_MODEL = os.getenv("GROQ_MODEL", "openai/gpt-oss-120b")
+
 llm = ChatGroq(
-    model="llama-3.3-70b-versatile",
+    model=GROQ_MODEL,
     api_key=GROQ_API_KEY
 )
 
